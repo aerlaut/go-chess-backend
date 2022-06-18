@@ -1,18 +1,15 @@
 package match
 
 import (
-	"fmt"
 	"math/rand"
 	"time"
 )
 
 var letterRunes = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 var defaultIdLength = 8
-var baseUrl = "http://localhost:5000"
 
 type match struct {
-	Id   string `json:"-"`
-	Link string `json:"link"`
+	Id string `json:"id"`
 }
 
 func init() {
@@ -28,16 +25,11 @@ func generateMatchId(n int) string {
 	return string(b)
 }
 
-func generateMatchLink(id string) string {
-	return fmt.Sprintf("%s/api/match/%s", baseUrl, id)
-}
-
 func NewMatch() *match {
 
 	id := generateMatchId(defaultIdLength)
 
 	return &match{
-		Id:   id,
-		Link: generateMatchLink(id),
+		Id: id,
 	}
 }

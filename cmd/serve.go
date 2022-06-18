@@ -27,6 +27,8 @@ func main() {
 	}))
 
 	r.Route("/api", func(r chi.Router) {
+		// Upgrade to websocket connection
+		r.Get("/match/{matchId}", match.ConnectToMatch)
 		r.Get("/match", match.GenerateMatchLink)
 	})
 
