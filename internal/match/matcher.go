@@ -1,16 +1,14 @@
 package match
 
 import (
-	"fmt"
+	"encoding/json"
 	"net/http"
 )
-
-var baseUrl = "http://localhost:5000"
 
 func GenerateMatchLink(w http.ResponseWriter, r *http.Request) {
 
 	match := NewMatch()
+	str, _ := json.Marshal(match)
 
-	link := fmt.Sprintf("%s/match/%s", baseUrl, match.Id)
-	w.Write([]byte(link))
+	w.Write(str)
 }
