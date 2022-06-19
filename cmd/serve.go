@@ -2,9 +2,11 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 
-	"github.com/aerlaut/go-chess-backend/internal/match"
+	"github.com/aerlaut/go-chess-backend/internal/engine"
+	"github.com/aerlaut/go-chess-backend/internal/game"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
@@ -13,12 +15,13 @@ import (
 const PORT = "5000"
 
 func main() {
+
+	engine.InitEngine()
+
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
 	r.Use(cors.Handler(cors.Options{
-		// AllowedOrigins:   []string{"https://foo.com"}, // Use this to allow specific origin hosts
-		AllowedOrigins: []string{"https://*", "http://*"},
-		// AllowOriginFunc:  func(r *http.Request, origin string) bool { return true },
+		AllowedOrigins:   []string{"https://*", "http://*"},
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
 		ExposedHeaders:   []string{"Link"},
@@ -28,12 +31,12 @@ func main() {
 
 	r.Route("/api", func(r chi.Router) {
 		// Upgrade to websocket connection
-		r.Get("/match/{matchId}", match.ConnectToMatch)
-		r.Get("/match", match.GenerateMatchLink)
+		r.Get("/game/{gameId}", game.ConnectToGame)
+		r.Get("/game", game.GenerateGameLink)
 	})
 
-	fmt.Println("=== Go-Chess backend server ===")
-	fmt.Printf("Listening on port %s", PORT)
+	log.Println("[SERVER] === Go-Chess backend server ===")
+	log.Printf("[SERVER] - Listening on port %s", PORT)
 
 	http.ListenAndServe(fmt.Sprintf("localhost:%s", PORT), r)
 }

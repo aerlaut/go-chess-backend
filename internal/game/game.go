@@ -1,4 +1,4 @@
-package match
+package game
 
 import (
 	"math/rand"
@@ -8,7 +8,7 @@ import (
 var letterRunes = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 var defaultIdLength = 8
 
-type match struct {
+type game struct {
 	Id string `json:"id"`
 }
 
@@ -16,7 +16,7 @@ func init() {
 	rand.Seed(time.Now().UnixNano())
 }
 
-func generateMatchId(n int) string {
+func generateGameId(n int) string {
 
 	b := make([]rune, n)
 	for i := range b {
@@ -25,11 +25,11 @@ func generateMatchId(n int) string {
 	return string(b)
 }
 
-func NewMatch() *match {
+func NewGame() *game {
 
-	id := generateMatchId(defaultIdLength)
+	id := generateGameId(defaultIdLength)
 
-	return &match{
+	return &game{
 		Id: id,
 	}
 }
